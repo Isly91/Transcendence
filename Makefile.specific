@@ -1,0 +1,61 @@
+COMPOSE_FILE=docker-compose.yml
+
+# Frontend
+up-frontend:
+	docker-compose -f $(COMPOSE_FILE) up -d frontend
+
+build-frontend:
+	docker-compose -f $(COMPOSE_FILE) build frontend
+
+logs-frontend:
+	docker-compose -f $(COMPOSE_FILE) logs -f frontend
+
+stop-frontend:
+	docker-compose -f $(COMPOSE_FILE) stop frontend
+
+rm-frontend:
+	docker-compose -f $(COMPOSE_FILE) rm -f frontend
+
+restart-frontend: stop-frontend up-frontend
+
+# Backend
+up-backend:
+	docker-compose -f $(COMPOSE_FILE) up -d backend
+
+build-backend:
+	docker-compose -f $(COMPOSE_FILE) build backend
+
+logs-backend:
+	docker-compose -f $(COMPOSE_FILE) logs -f backend
+
+stop-backend:
+	docker-compose -f $(COMPOSE_FILE) stop backend
+
+rm-backend:
+	docker-compose -f $(COMPOSE_FILE) rm -f backend
+
+restart-backend: stop-backend build-backend up-backend
+
+# Database
+up-db:
+	docker-compose -f $(COMPOSE_FILE) up -d db
+
+build-db:
+	docker-compose -f $(COMPOSE_FILE) build db
+
+logs-db:
+	docker-compose -f $(COMPOSE_FILE) logs -f db
+
+stop-db:
+	docker-compose -f $(COMPOSE_FILE) stop db
+
+rm-db:
+	docker-compose -f $(COMPOSE_FILE) rm -f db
+
+restart-db: stop-db up-db
+
+.PHONY: \
+	up-frontend build-frontend logs-frontend stop-frontend rm-frontend restart-frontend \
+	up-backend build-backend logs-backend stop-backend rm-backend restart-backend \
+	up-db build-db logs-db stop-db rm-db restart-db
+
