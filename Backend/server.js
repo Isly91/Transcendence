@@ -23,7 +23,6 @@ db = new sqlite3.Database(dbPath, (err) => {
 });
 
 db.serialize(() => {
-	  // Create a table if it doesn't exist
   db.run(`CREATE TABLE IF NOT EXISTS users (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
@@ -34,7 +33,30 @@ db.serialize(() => {
 	} else {
 	  console.log('Table created or already exists.');
 	}
+  const dummyUsers = [
+    { name: 'Alice', email: 'alice@example.com' },
+    { name: 'Bob', email: 'bob@example.com' },
+    { name: 'Charlie', email: 'charlie@example.com' }
+  ];
+
+  dummyUsers.forEach(user => {
+    db.run(
+      `INSERT INTO users (name, email) VALUES (?, ?)`,
+      [user.name, user.email],
+      function (err) {
+        if (err) {
+          if (err.code === 'SQLITE_CONSTRAINT') {
+            console.log(`User with email ${user.email} already exists.`);
+          } else {
+            console.error('Error inserting user:', err);
+          }
+        } else {
+          console.log(`Inserted user: ${user.name} (${user.email})`);
+        }
+      }
+    );
   });
+});
 });
   
 
@@ -53,6 +75,17 @@ fastify.get('/', async (request, reply) => {
     </html>
   `);
 });
+
+fastify.get('/users', (request, reply) => {
+  db.all('SELECT id, name, email FROM users', [], (err, rows) => {
+    if (err) {
+      reply.status(500).send({ error: 'Database error' });
+      return;
+    }
+    reply.send(rows);
+  });
+});
+
 
 // Gracefully close the database on shutdown
 process.on('SIGINT', () => {

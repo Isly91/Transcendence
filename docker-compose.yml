@@ -6,8 +6,8 @@ services:
     container_name: ${BACKEND_CONTAINER_NAME}
     env_file:
       - ./.env
-    ports:
-      - "3001:3001"
+    # ports:
+    #   - "3001:3001"
     volumes:
       - ./Backend/data:/app/data
     networks:
@@ -25,17 +25,17 @@ services:
     networks:
       - ${NETWORK_NAME}
 
-  db:
-    build:
-      context: ./SQLite
-    image: ${SQLITE_IMAGE_NAME}
-    container_name: ${SQLITE_CONTAINER_NAME}
-    env_file:
-      - ./.env
-    volumes:
-      - ./SQLite/data:/data
-    networks:
-      - ${NETWORK_NAME}
+  # db:
+  #   build:
+  #     context: ./SQLite
+  #   image: ${SQLITE_IMAGE_NAME}
+  #   container_name: ${SQLITE_CONTAINER_NAME}
+  #   env_file:
+  #     - ./.env
+  #   volumes:
+  #     - ./SQLite/data:/data
+  #   networks:
+  #     - ${NETWORK_NAME}
 
 networks:
   transcendence_network:
