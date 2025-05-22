@@ -16,7 +16,7 @@ stop-frontend:
 rm-frontend:
 	docker-compose -f $(COMPOSE_FILE) rm -f frontend
 
-restart-frontend: stop-frontend up-frontend
+restart-frontend: stop-frontend rm-frontend up-frontend
 
 # Backend
 up-backend:

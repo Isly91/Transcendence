@@ -22,6 +22,8 @@ RUN npx tailwindcss init -p
 
 RUN npm install gsap
 
+RUN npm install next-auth
+
 COPY . .
 
 RUN npm run build
