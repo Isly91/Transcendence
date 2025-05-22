@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
@@ -13,7 +13,12 @@ RUN npx tsc --init
 RUN npm install -g next
 
 # To fix
-RUN npm install -g tailwindcss 
+
+RUN npm cache clean --force && \
+    npm install -D tailwindcss@3.3.2 postcss autoprefixer && \
+    npm install
+
+RUN npx tailwindcss init -p
 
 RUN npm install gsap
 
