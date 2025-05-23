@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+    image: ${BACKEND_IMAGE_NAME}
+    container_name: ${BACKEND_CONTAINER_NAME}
+    env_file:
+      - ./.env
+    # ports:
+    #   - "3001:3001"
+    volumes:
+      - ./Backend/data:/app/data
+    networks:
+      - ${NETWORK_NAME}
+
+  frontend:
+    build:
+      context: ./Frontend
+    image: ${FRONTEND_IMAGE_NAME}
+    container_name: ${FRONTEND_CONTAINER_NAME}
+    env_file:
+      - ./.env
+    ports:
+      - "3000:3000"
+    networks:
+      - ${NETWORK_NAME}
+
+  # db:
+  #   build:
+  #     context: ./SQLite
+  #   image: ${SQLITE_IMAGE_NAME}
+  #   container_name: ${SQLITE_CONTAINER_NAME}
+  #   env_file:
+  #     - ./.env
+  #   volumes:
+  #     - ./SQLite/data:/data
+  #   networks:
+  #     - ${NETWORK_NAME}
+
+networks:
+  transcendence_network:
+    driver: bridge
+    
